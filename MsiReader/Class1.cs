@@ -1,11 +1,78 @@
 ﻿using System;
 using OpenMcdf;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using OpenMcdf.Extensions;
 using OpenMcdf.Extensions.OLEProperties;
 
 namespace MsiReader
 {
+    static class Win32Error
+    {
+        public const int NO_ERROR = 0;
+        public const int ERROR_NO_MORE_ITEMS = 259;
+
+    }
+    class MsiPull
+    {
+        [DllImport("msi.dll", SetLastError = true)]
+        static extern uint MsiOpenDatabase(string szDatabasePath, IntPtr phPersist, out IntPtr phDatabase);
+
+        [DllImport("msi.dll", CharSet = CharSet.Unicode)]
+        static extern int MsiDatabaseOpenView(IntPtr hDatabase, [MarshalAs(UnmanagedType.LPWStr)] string szQuery, out IntPtr phView);
+
+        [DllImport("msi.dll", CharSet = CharSet.Unicode)]
+        static extern int MsiViewExecute(IntPtr hView, IntPtr hRecord);
+
+        [DllImport("msi.dll", CharSet = CharSet.Unicode)]
+        static extern uint MsiViewFetch(IntPtr hView, out IntPtr hRecord);
+
+
+        [DllImport("msi.dll", CharSet = CharSet.Unicode)]
+        static extern int MsiRecordGetString(IntPtr hRecord, int iField, StringBuilder szValueBuf, ref int pcchValueBuf);
+
+        public static int DrawFromMsi(String fileName)
+        {
+            try
+            {
+                if (MsiOpenDatabase(fileName, IntPtr.Zero, out IntPtr hDatabase) != Win32Error.NO_ERROR)
+                {
+                    Console.WriteLine("Failed to open dabase");
+                    return 1;
+                }
+
+                if (MsiDatabaseOpenView(hDatabase, "SELECT `Name` FROM _Tables", out IntPtr hView) != Win32Error.NO_ERROR)
+                {
+                    Console.WriteLine("Failed to open view");
+                    return 1;
+                }
+
+                MsiViewExecute(hView, IntPtr.Zero);
+
+                while (MsiViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
+                {
+                    StringBuilder buffer = new StringBuilder(256);
+                    int capacity = buffer.Capacity;
+                    if (MsiRecordGetString(hRecord, 1, buffer, ref capacity) != Win32Error.NO_ERROR)
+                    {
+                        Console.WriteLine("Failed to get record string");
+                        return 1;
+                    }
+                    Console.WriteLine(buffer.ToString());
+                }
+                return 0;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return 1;
+            }
+        }
+
+
+    }
     public class Class1
     {
         static void Main(string[] args)
@@ -14,10 +81,11 @@ namespace MsiReader
             CompoundFile cf = new CompoundFile(filename);
             //  Console.WriteLine(cf.ToString());
             // Console.WriteLine(cf.GetType().ToString());
-            for (int i = 0; i <cf.GetNumDirectories(); ++i)
-            {
-                Console.WriteLine(cf.GetNameDirEntry(i));
-            }
+            //for (int i = 0; i <cf.GetNumDirectories(); ++i)
+            //{
+            //    Console.WriteLine(cf.GetNameDirEntry(i));
+                
+            //}
             CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
             //byte[] temp = fStream.GetData();
             //var data = temp.GetEnumerator();
@@ -41,7 +109,8 @@ namespace MsiReader
 
 
             //TODO:: nađi način za izvući podatke summary infoa
-            OLEPropertiesContainer.SummaryInfoProperties summaryInfo;
+            //OLEPropertiesContainer.SummaryInfoProperties summaryInfo;
+            MsiPull.DrawFromMsi("Setupdistex.msi");
 
             // OLEPropertiesContainer container = fStream.AsOLEPropertiesContainer();
             // OLEPropertiesContainer.SummaryInfoProperties summaryInfo = new OLEPropertiesContainer.SummaryInfoProperties();
