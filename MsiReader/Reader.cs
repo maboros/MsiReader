@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using OpenMcdf.Extensions;
 using OpenMcdf.Extensions.OLEProperties;
+using System.Collections.Generic;
 
 namespace MsiReader
 {
@@ -14,7 +15,7 @@ namespace MsiReader
         public const int ERROR_NO_MORE_ITEMS = 259;
 
     }
-    class MsiPull
+    public class MsiPull
     {
         [DllImport("msi.dll", SetLastError = true)]
         static extern uint MsiOpenDatabase(string szDatabasePath, IntPtr phPersist, out IntPtr phDatabase);
@@ -32,7 +33,7 @@ namespace MsiReader
         [DllImport("msi.dll", CharSet = CharSet.Unicode)]
         static extern int MsiRecordGetString(IntPtr hRecord, int iField, StringBuilder szValueBuf, ref int pcchValueBuf);
 
-        public static int DrawFromMsi(String fileName)
+        public static int DrawFromMsi(String fileName,ref List<String> returnNames)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace MsiReader
                         Console.WriteLine("Failed to get record string");
                         return 1;
                     }
-                    Console.WriteLine(buffer.ToString());
+                    returnNames.Add(buffer.ToString());
                 }
                 return 0;
 
@@ -73,60 +74,29 @@ namespace MsiReader
 
 
     }
-    public class Class1
+    public class Reader
     {
         static void Main(string[] args)
         {
-            String filename = "Setupdistex.msi";
-            CompoundFile cf = new CompoundFile(filename);
-            //  Console.WriteLine(cf.ToString());
-            // Console.WriteLine(cf.GetType().ToString());
-            //for (int i = 0; i <cf.GetNumDirectories(); ++i)
-            //{
-            //    Console.WriteLine(cf.GetNameDirEntry(i));
-                
-            //}
+            String fileName = "Setupdistex.msi";
+            
+            List<String> allFileNames = new List<String>();
+            MsiPull.DrawFromMsi(fileName, ref allFileNames);
+
+            foreach (var name in allFileNames)
+            {
+                Console.WriteLine(name.ToString());
+            }
+
+
+            CompoundFile cf = new CompoundFile(fileName);
             CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
-            //byte[] temp = fStream.GetData();
-            //var data = temp.GetEnumerator();
-            //while(data.MoveNext())
-            //{
-            //    Console.Write(Convert.ToChar(data.Current));
-                
-            //}
 
-
-
-            // CompoundFile cf = new CompoundFile(filename);
-            //  CFStream foundStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
             var container = fStream.AsOLEPropertiesContainer();
             foreach (var property in container.Properties)
                 Console.WriteLine($"{property.PropertyName}: {property.Value}");
 
-            //Console.WriteLine(cf.RootStorage.);
-
-            // Console.WriteLine(fStream.ToString());
-
-
-            //TODO:: nađi način za izvući podatke summary infoa
-            //OLEPropertiesContainer.SummaryInfoProperties summaryInfo;
-            MsiPull.DrawFromMsi("Setupdistex.msi");
-
-            // OLEPropertiesContainer container = fStream.AsOLEPropertiesContainer();
-            // OLEPropertiesContainer.SummaryInfoProperties summaryInfo = new OLEPropertiesContainer.SummaryInfoProperties();
-
-            /*Nisam siguran na koji bi način sad iz msi-a izvukao SummaryInfo
-             cf.ToString() mi ne vraća ništa pa nisam siguran je li file učitan kako treba. 
-
-            Program ne crasha, ali na GetStream dobijem "Cannot find item [Summary Information] within the current storage"
-            Probao sam sa "_" umjesto razmaka i provjerom slova više puta, nisam siguran radim li ulazak u file kako treba
-            zbog ovog ToStringa.
-
-            cf.GetType().ToString(); također ništa ne daje
-            Što se tiče ovog containera mislim da će mi negdje trebati, ili nekako ću koristiti ovaj SummaryInfoProperties 
-             */
             cf.Close();
-            // container.
         }
         }
     }
