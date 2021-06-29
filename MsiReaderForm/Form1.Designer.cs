@@ -30,6 +30,10 @@ namespace MsiReaderForm
         private void InitializeComponent()
         {
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // treeView1
@@ -39,21 +43,59 @@ namespace MsiReaderForm
             this.treeView1.Size = new System.Drawing.Size(458, 425);
             this.treeView1.TabIndex = 0;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(477, 415);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "&Browse";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(477, 62);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(311, 23);
+            this.textBox1.TabIndex = 2;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(509, 132);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(120, 94);
+            this.listBox1.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.treeView1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

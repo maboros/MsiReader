@@ -5,9 +5,7 @@ using System;
 using MsiReader;
 
 
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
+
 
 
 namespace UnitTests

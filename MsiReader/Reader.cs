@@ -74,29 +74,29 @@ namespace MsiReader
 
 
     }
-    public class Reader
-    {
-        static void Main(string[] args)
-        {
-            String fileName = "Setupdistex.msi";
+    //public class Reader
+    //{
+    //    static void Main(string[] args)
+    //    {
+    //        String fileName = "C:/Users/Marko/Desktop/Primjeri/68b3ac.msi";
             
-            List<String> allFileNames = new List<String>();
-            MsiPull.DrawFromMsi(fileName, ref allFileNames);
+    //        List<String> allFileNames = new List<String>();
+    //        MsiPull.DrawFromMsi(fileName, ref allFileNames);
 
-            foreach (var name in allFileNames)
-            {
-                Console.WriteLine(name.ToString());
-            }
+    //        foreach (var name in allFileNames)
+    //        {
+    //            Console.WriteLine(name.ToString());
+    //        }
 
 
-            CompoundFile cf = new CompoundFile(fileName);
-            CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
+    //        CompoundFile cf = new CompoundFile(fileName);
+    //        CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
 
-            var container = fStream.AsOLEPropertiesContainer();
-            foreach (var property in container.Properties)
-                Console.WriteLine($"{property.PropertyName}: {property.Value}");
+    //        var container = fStream.AsOLEPropertiesContainer();
+    //        foreach (var property in container.Properties)
+    //            Console.WriteLine($"{property.PropertyName}: {property.Value}");
 
-            cf.Close();
-        }
-        }
+    //        cf.Close();
+    //    }
+    //    }
     }
