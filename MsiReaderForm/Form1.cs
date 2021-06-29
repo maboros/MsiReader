@@ -13,12 +13,6 @@ using MsiReader;
 
 namespace MsiReaderForm
 {
-    static class Win32Error
-    {
-        public const int NO_ERROR = 0;
-        public const int ERROR_NO_MORE_ITEMS = 259;
-
-    }
     public partial class Form1 : Form
     {
         public Form1()
@@ -49,7 +43,6 @@ namespace MsiReaderForm
                 
                 String myString= fileDialog.FileName;
                 myString = myString.Replace(@"\", "/");
-                textBox1.Text = myString;
                 FillTreeView(myString);
             }
         }
@@ -68,6 +61,7 @@ namespace MsiReaderForm
             {
                 treeView1.Nodes[0].Nodes.Add(name.ToString());
             }
+            treeView1.Enabled = true;
             
         }
         //this is where the magic happens

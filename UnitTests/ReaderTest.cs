@@ -10,12 +10,6 @@ using MsiReader;
 
 namespace UnitTests
 {
-    static class Win32Error
-    {
-        public const int NO_ERROR = 0;
-        public const int ERROR_NO_MORE_ITEMS = 259;
-
-    }
     [TestClass]
     public class ReaderTest
     {
