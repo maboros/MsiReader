@@ -32,5 +32,14 @@ namespace UnitTests
 
             Assert.AreEqual("_Validation", allFileNames.First());     
         }
+
+        [TestMethod]
+        public void getSummaryInformationPullsFirstItem()
+        {
+            var list=MsiPull.getSummaryInformation("C:/Users/Marko/Desktop/Primjeri/68b3ac.msi");
+            Assert.AreEqual("CodePageString", list.First().name);
+            Assert.AreEqual("1252", list.First().value);
+        }
     }
+
 }

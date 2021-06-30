@@ -92,7 +92,7 @@ namespace MsiReader
             foreach (var property in container.Properties)
             {
                 Console.WriteLine($"{property.PropertyName}: {property.Value}");
-                fullList.Add(new SummaryInfoProps((String)property.PropertyName,(String) property.Value));
+                fullList.Add(new SummaryInfoProps(property.PropertyName.ToString(),property.Value.ToString()));
             }
             cf.Close();
             return fullList;
