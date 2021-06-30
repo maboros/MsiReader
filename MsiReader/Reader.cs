@@ -15,6 +15,17 @@ namespace MsiReader
         public const int ERROR_NO_MORE_ITEMS = 259;
 
     }
+    public class SummaryInfoProps
+    {
+        //TODO: geter
+        public String name;
+        public String value;
+        public SummaryInfoProps(String name, String value)
+        {
+            this.name = name;
+            this.value = value;
+        }
+    }
     public class MsiPull
     {
         [DllImport("msi.dll", SetLastError = true)]
@@ -72,14 +83,27 @@ namespace MsiReader
             }
         }
 
-
+        public static List<SummaryInfoProps> getSummaryInformation(String fileName)
+        {
+            CompoundFile cf = new CompoundFile(fileName);
+            CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
+            List < SummaryInfoProps >fullList= new List<SummaryInfoProps>();
+            var container = fStream.AsOLEPropertiesContainer();
+            foreach (var property in container.Properties)
+            {
+                Console.WriteLine($"{property.PropertyName}: {property.Value}");
+                fullList.Add(new SummaryInfoProps((String)property.PropertyName,(String) property.Value));
+            }
+            cf.Close();
+            return fullList;
+        }
     }
     //public class Reader
     //{
     //    static void Main(string[] args)
     //    {
     //        String fileName = "C:/Users/Marko/Desktop/Primjeri/68b3ac.msi";
-            
+
     //        List<String> allFileNames = new List<String>();
     //        MsiPull.DrawFromMsi(fileName, ref allFileNames);
 
@@ -89,14 +113,7 @@ namespace MsiReader
     //        }
 
 
-    //        CompoundFile cf = new CompoundFile(fileName);
-    //        CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
 
-    //        var container = fStream.AsOLEPropertiesContainer();
-    //        foreach (var property in container.Properties)
-    //            Console.WriteLine($"{property.PropertyName}: {property.Value}");
-
-    //        cf.Close();
     //    }
     //    }
     }

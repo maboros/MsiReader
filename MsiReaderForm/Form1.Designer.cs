@@ -33,14 +33,17 @@ namespace MsiReaderForm
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.PropertyName = new System.Windows.Forms.ColumnHeader();
+            this.Value = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // treeView1
             // 
             this.treeView1.Enabled = false;
-            this.treeView1.Location = new System.Drawing.Point(13, 13);
+            this.treeView1.Location = new System.Drawing.Point(13, 28);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(782, 373);
+            this.treeView1.Size = new System.Drawing.Size(433, 358);
             this.treeView1.TabIndex = 0;
             // 
             // openFileDialog1
@@ -66,11 +69,37 @@ namespace MsiReaderForm
             this.label1.TabIndex = 2;
             this.label1.Text = "Browse MSI files";
             // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.PropertyName,
+            this.Value});
+            this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(453, 28);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(318, 358);
+            this.listView1.TabIndex = 3;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // PropertyName
+            // 
+            this.PropertyName.Text = "Property name";
+            this.PropertyName.Width = 120;
+            // 
+            // Value
+            // 
+            this.Value.Text = "Value";
+            this.Value.Width = 200;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.treeView1);
@@ -87,6 +116,9 @@ namespace MsiReaderForm
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader PropertyName;
+        private System.Windows.Forms.ColumnHeader Value;
     }
 }
 
