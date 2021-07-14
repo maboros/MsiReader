@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsiReader", "MsiReader\MsiR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsiReaderForm", "MsiReaderForm\MsiReaderForm.csproj", "{8DF7AE03-7064-4A00-BC4D-7D04FADFD6F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{BF1D8A84-D331-4725-AC40-CEB180BB80A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestsMsiReader", "UnitTestsMsiReader\UnitTestsMsiReader.csproj", "{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{8DF7AE03-7064-4A00-BC4D-7D04FADFD6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DF7AE03-7064-4A00-BC4D-7D04FADFD6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DF7AE03-7064-4A00-BC4D-7D04FADFD6F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF1D8A84-D331-4725-AC40-CEB180BB80A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF1D8A84-D331-4725-AC40-CEB180BB80A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF1D8A84-D331-4725-AC40-CEB180BB80A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF1D8A84-D331-4725-AC40-CEB180BB80A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

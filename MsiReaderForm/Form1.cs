@@ -68,17 +68,17 @@ namespace MsiReaderForm
            var propertyList = MsiPull.getSummaryInformation(fullPathName);
 
 
-           //// *Ovaj getSummaryInfromation se krši.
+            //// *Ovaj getSummaryInfromation se krši.
 
 
 
-           // foreach (var property in propertyList)
-           // {
-           //     var row = new string[] { property.name, property.value };
-           //     var viewItem = new ListViewItem(row);
-           //     viewItem.Tag = property;
-           //     listView1.Items.Add(viewItem);
-           // }
+            foreach (var property in propertyList)
+            {
+                var row = new string[] { property.name, property.value };
+                var viewItem = new ListViewItem(row);
+                viewItem.Tag = property;
+                listView1.Items.Add(viewItem);
+            }
 
         }
     }

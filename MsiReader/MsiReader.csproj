@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
-    <UserSecretsId>2563b74a-5fa6-4de6-b32f-effe73d8d274</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<ApplicationIcon />
+		<StartupObject />
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="OpenMcdf" Version="2.2.1.9" />
     <PackageReference Include="OpenMcdf.Extensions" Version="2.2.1.4" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
 	  
   </ItemGroup>
 

@@ -49,6 +49,7 @@ namespace MsiReader
             {
                 if (MsiOpenDatabase(fileName, IntPtr.Zero, out IntPtr hDatabase) != Win32Error.NO_ERROR)
                 {
+                    Console.WriteLine(fileName);
                     Console.WriteLine("Failed to open dabase");
                     return 1;
                 }
@@ -87,6 +88,7 @@ namespace MsiReader
             CompoundFile cf = new CompoundFile(fileName);
             CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
             List < SummaryInfoProps >fullList= new List<SummaryInfoProps>();
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             var container = fStream.AsOLEPropertiesContainer();
             foreach (var property in container.Properties)
             {
@@ -99,10 +101,10 @@ namespace MsiReader
         //static void Main(string[] args)
         //{
         //    string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-        //    var list = MsiPull.getSummaryInformation(solutiondir + "\\" + "appData" + "\\68b3ac.msi");
-        //    foreach(var item in list)
+        //    var list = MsiPull.getSummaryInformation("68b3ac.msi");
+        //    foreach (var item in list)
         //    {
-        //        Console.WriteLine(item);
+        //        Console.WriteLine("{0} \n {1}",item.name,item.value);
         //    }
 
         //}

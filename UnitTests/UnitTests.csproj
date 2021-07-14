@@ -53,7 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="appData\68b3ac.msi" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
