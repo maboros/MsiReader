@@ -1,19 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ApplicationIcon />
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <StartupObject />
+    <UserSecretsId>2563b74a-5fa6-4de6-b32f-effe73d8d274</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="OpenMcdf">
-      <HintPath>..\..\..\..\Desktop\openmcdf-master\bin\Debug\OpenMcdf.Extensions\netstandard2.0\OpenMcdf.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMcdf.Extensions">
-      <HintPath>..\..\..\..\Desktop\openmcdf-master\bin\Debug\OpenMcdf.Extensions\netstandard2.0\OpenMcdf.Extensions.dll</HintPath>
-    </Reference>
+    <PackageReference Include="OpenMcdf" Version="2.2.1.9"/>
+    <PackageReference Include="OpenMcdf.Extensions" Version="2.2.1.4"/>
+	  
   </ItemGroup>
 
 </Project>

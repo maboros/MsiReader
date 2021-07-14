@@ -10,13 +10,4 @@
     <ProjectReference Include="..\MsiReader\MsiReader.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="OpenMcdf">
-      <HintPath>..\..\..\..\Desktop\openmcdf-master\bin\Debug\OpenMcdf\netstandard2.0\OpenMcdf.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenMcdf.Extensions">
-      <HintPath>..\..\..\..\Desktop\openmcdf-master\bin\Debug\OpenMcdf.Extensions\netstandard2.0\OpenMcdf.Extensions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

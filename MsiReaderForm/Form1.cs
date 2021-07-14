@@ -9,9 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MsiReader;
-using OpenMcdf.Extensions;
-using OpenMcdf.Extensions.OLEProperties;
-using OpenMcdf;
 
 namespace MsiReaderForm
 {

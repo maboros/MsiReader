@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using MsiReader;
-
-
-
-
+using System.IO;
 
 namespace UnitTests
 {
@@ -17,12 +14,9 @@ namespace UnitTests
         public void FileIsLoaded()
         {
             List<String> allFileNames = new List<String>();
-
-
-            Assert.AreEqual(0,MsiPull.DrawFromMsi("Setupdistex.msi", ref allFileNames));
-
-            Assert.AreEqual("_Validation", allFileNames.First());
-            //Assert.IsTrue(someexpressionorboolean);        
+            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            Assert.AreEqual(0, MsiPull.DrawFromMsi("Setupdistex.msi", ref allFileNames));
+            Assert.AreEqual("_Validation", allFileNames.First());      
         }
         [TestMethod]
         public void FirstItemIsCorrect()
@@ -36,7 +30,8 @@ namespace UnitTests
         [TestMethod]
         public void getSummaryInformationPullsFirstItem()
         {
-            var list=MsiPull.getSummaryInformation("C:/Users/Marko/Desktop/Primjeri/68b3ac.msi");
+            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            var list=MsiPull.getSummaryInformation(solutiondir + "\\" + "appData" + "\\68b3ac.msi");
             Assert.AreEqual("CodePageString", list.First().name);
             Assert.AreEqual("1252", list.First().value);
         }

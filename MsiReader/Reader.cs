@@ -17,7 +17,6 @@ namespace MsiReader
     }
     public class SummaryInfoProps
     {
-        //TODO: geter
         public String name;
         public String value;
         public SummaryInfoProps(String name, String value)
@@ -97,23 +96,16 @@ namespace MsiReader
             cf.Close();
             return fullList;
         }
+        static void Main(string[] args)
+        {
+            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            var list = MsiPull.getSummaryInformation(solutiondir + "\\" + "appData" + "\\68b3ac.msi");
+            foreach(var item in list)
+            {
+                Console.WriteLine(item);
+            }
+
+        }
     }
-    //public class Reader
-    //{
-    //    static void Main(string[] args)
-    //    {
-    //        String fileName = "C:/Users/Marko/Desktop/Primjeri/68b3ac.msi";
-
-    //        List<String> allFileNames = new List<String>();
-    //        MsiPull.DrawFromMsi(fileName, ref allFileNames);
-
-    //        foreach (var name in allFileNames)
-    //        {
-    //            Console.WriteLine(name.ToString());
-    //        }
-
-
-
-    //    }
-    //    }
+        
     }
