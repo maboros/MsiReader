@@ -65,20 +65,20 @@ namespace MsiReaderForm
                 treeView1.Nodes[0].Nodes.Add(name.ToString());
             }
             treeView1.Enabled = true;
-           // var propertyList = MsiPull.getSummaryInformation(fullPathName);
+           var propertyList = MsiPull.getSummaryInformation(fullPathName);
 
 
-           //// *Ovaj getSummaryInfromation se krši.
+            //// *Ovaj getSummaryInfromation se krši.
 
 
 
-           // foreach (var property in propertyList)
-           // {
-           //     var row = new string[] { property.name, property.value };
-           //     var viewItem = new ListViewItem(row);
-           //     viewItem.Tag = property;
-           //     listView1.Items.Add(viewItem);
-           // }
+            foreach (var property in propertyList)
+            {
+                var row = new string[] { property.name, property.value };
+                var viewItem = new ListViewItem(row);
+                viewItem.Tag = property;
+                listView1.Items.Add(viewItem);
+            }
 
         }
     }
