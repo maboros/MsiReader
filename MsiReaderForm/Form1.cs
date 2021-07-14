@@ -65,7 +65,7 @@ namespace MsiReaderForm
                 treeView1.Nodes[0].Nodes.Add(name.ToString());
             }
             treeView1.Enabled = true;
-           // var propertyList = MsiPull.getSummaryInformation(fullPathName);
+           var propertyList = MsiPull.getSummaryInformation(fullPathName);
 
 
            //// *Ovaj getSummaryInfromation se krši.

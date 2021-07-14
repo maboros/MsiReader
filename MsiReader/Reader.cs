@@ -96,16 +96,16 @@ namespace MsiReader
             cf.Close();
             return fullList;
         }
-        static void Main(string[] args)
-        {
-            string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-            var list = MsiPull.getSummaryInformation(solutiondir + "\\" + "appData" + "\\68b3ac.msi");
-            foreach(var item in list)
-            {
-                Console.WriteLine(item);
-            }
+        //static void Main(string[] args)
+        //{
+        //    string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+        //    var list = MsiPull.getSummaryInformation(solutiondir + "\\" + "appData" + "\\68b3ac.msi");
+        //    foreach(var item in list)
+        //    {
+        //        Console.WriteLine(item);
+        //    }
 
-        }
+        //}
     }
         
     }
