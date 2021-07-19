@@ -46,6 +46,9 @@ namespace MsiReader
         [DllImport("msi.dll", ExactSpelling = true)]
         static extern uint MsiRecordReadStream(IntPtr hRecord, uint iField,[Out] byte[] szDataBuf, ref int pcbDataBuf);
 
+        [DllImport("msi.dll", ExactSpelling = true)]
+        static extern int MsiRecordDataSize(IntPtr hRecord, int iField);
+
         public static int DrawFromMsi(String fileName,ref List<String> returnNames)
         {
             try
@@ -107,14 +110,16 @@ namespace MsiReader
                     //MsiPull.DrawFromMsi(fullPathName, ref allFileNames);
                     //String data=allFileNames.Find(x => x == fullPathName);
                     //return data;
-                    var dataBuf = new byte[256];
-                    int capacity = dataBuf.Length;
-                    for (int i = 0; i < dataBuf.Length; i++)
-                    {
-                        dataBuf[i] = 0x20;
-                        //String toAdd = Environment.NewLine+dataBuf[i].ToString();
-                        //dataString.Add(toAdd);
-                    }
+                    
+                    //int capacity = dataBuf.Length;
+                    int capacity = MsiRecordDataSize(hRecord, 1);
+                    var dataBuf = new byte[capacity];
+                    //for (int i = 0; i < dataBuf.Length; i++)
+                    //{
+                    //    dataBuf[i] = 0x20;
+                    //    String toAdd = Environment.NewLine+dataBuf[i].ToString();
+                    //    dataString.Add(toAdd);
+                    //}
                     if (MsiRecordReadStream(hRecord, 1, dataBuf, ref capacity) != Win32Error.NO_ERROR)
                     {
                         return "Failed to read stream";
