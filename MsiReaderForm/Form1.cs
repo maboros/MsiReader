@@ -14,6 +14,8 @@ namespace MsiReaderForm
 {
     public partial class Form1 : Form
     {
+        private string fullPathName;
+
         public Form1()
         {
             InitializeComponent();
@@ -27,15 +29,12 @@ namespace MsiReaderForm
             {
                 InitialDirectory = @"C:\",
                 Title = "Browse MSI Files",
-
                 CheckFileExists = true,
                 CheckPathExists = true,
-
                 DefaultExt = "msi",
                 Filter = "msi files (*.msi)|*.msi|All files (*.*)|*.*",
                 FilterIndex = 2,
                 RestoreDirectory = true,
-
                 ReadOnlyChecked = true,
                 ShowReadOnly = true
             };
@@ -44,12 +43,13 @@ namespace MsiReaderForm
                 
                 String myString= fileDialog.FileName;
                 myString = myString.Replace(@"\", "/");
-                FillView(myString);
+                fullPathName = myString;
+                FillView();
             }
 
         }
 
-        private void FillView(String fullPathName)
+        private void FillView()
         {
             treeView1.Nodes.Clear();
             listView1.Items.Clear();
@@ -67,11 +67,6 @@ namespace MsiReaderForm
             treeView1.Enabled = true;
            var propertyList = MsiPull.getSummaryInformation(fullPathName);
 
-
-            //// *Ovaj getSummaryInfromation se krši.
-
-
-
             foreach (var property in propertyList)
             {
                 var row = new string[] { property.name, property.value };
@@ -80,6 +75,20 @@ namespace MsiReaderForm
                 listView1.Items.Add(viewItem);
             }
 
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Level == 0)
+            {
+                return;
+            }
+            List<String> dataString = new List<String>();
+            textBox1.Text = MsiPull.GetItemData(fullPathName,ref dataString,e.Node.Text);
+            foreach(var item in dataString)
+            {
+                textBox1.Text += item.ToString();
+            }
         }
     }
 }

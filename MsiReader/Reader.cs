@@ -43,6 +43,9 @@ namespace MsiReader
         [DllImport("msi.dll", CharSet = CharSet.Unicode)]
         static extern int MsiRecordGetString(IntPtr hRecord, int iField, StringBuilder szValueBuf, ref int pcchValueBuf);
 
+        [DllImport("msi.dll", ExactSpelling = true)]
+        static extern uint MsiRecordReadStream(IntPtr hRecord, uint iField,[Out] byte[] szDataBuf, ref int pcbDataBuf);
+
         public static int DrawFromMsi(String fileName,ref List<String> returnNames)
         {
             try
@@ -74,7 +77,6 @@ namespace MsiReader
                     returnNames.Add(buffer.ToString());
                 }
                 return 0;
-
             }
             catch (Exception e)
             {
@@ -82,7 +84,51 @@ namespace MsiReader
                 return 1;
             }
         }
+        public static string GetItemData(String fullPathName,ref List<String>dataString,String nameOfItem)
+        {
+            try
+            {
+                if (MsiOpenDatabase(fullPathName, IntPtr.Zero, out IntPtr hDatabase) != Win32Error.NO_ERROR)
+                {
+                    Console.WriteLine(fullPathName);
+                    return "Failed to open database";
+                }
 
+                if (MsiDatabaseOpenView(hDatabase, "SELECT `Name` FROM _Tables", out IntPtr hView) != Win32Error.NO_ERROR)
+                {
+                    return "Failed to open view";
+                }
+
+                MsiViewExecute(hView, IntPtr.Zero);
+
+                while (MsiViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
+                {
+                    //List<String> allFileNames = new List<String>();
+                    //MsiPull.DrawFromMsi(fullPathName, ref allFileNames);
+                    //String data=allFileNames.Find(x => x == fullPathName);
+                    //return data;
+                    var dataBuf = new byte[256];
+                    int capacity = dataBuf.Length;
+                    for (int i = 0; i < dataBuf.Length; i++)
+                    {
+                        dataBuf[i] = 0x20;
+                        //String toAdd = Environment.NewLine+dataBuf[i].ToString();
+                        //dataString.Add(toAdd);
+                    }
+                    if (MsiRecordReadStream(hRecord, 1, dataBuf, ref capacity) != Win32Error.NO_ERROR)
+                    {
+                        return "Failed to read stream";
+                    }
+                    dataString.Add(dataBuf.ToString());
+                }
+                return "No fail";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return "Exception";
+            }
+        }
         public static List<SummaryInfoProps> getSummaryInformation(String fileName)
         {
             CompoundFile cf = new CompoundFile(fileName);
@@ -92,22 +138,10 @@ namespace MsiReader
             var container = fStream.AsOLEPropertiesContainer();
             foreach (var property in container.Properties)
             {
-                Console.WriteLine($"{property.PropertyName}: {property.Value}");
                 fullList.Add(new SummaryInfoProps(property.PropertyName.ToString(),property.Value.ToString()));
             }
             cf.Close();
             return fullList;
         }
-        //static void Main(string[] args)
-        //{
-        //    string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-        //    var list = MsiPull.getSummaryInformation("68b3ac.msi");
-        //    foreach (var item in list)
-        //    {
-        //        Console.WriteLine("{0} \n {1}",item.name,item.value);
-        //    }
-
-        //}
-    }
-        
-    }
+    }   
+}
