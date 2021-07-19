@@ -84,7 +84,7 @@ namespace MsiReaderForm
                 return;
             }
             List<String> dataString = new List<String>();
-            textBox1.Text = MsiPull.GetItemData(fullPathName,ref dataString,e.Node.Text);
+            textBox1.Text = MsiPull.GetItemData(fullPathName,ref dataString,(uint)e.Node.Index);
             foreach(var item in dataString)
             {
                 textBox1.Text += item.ToString();

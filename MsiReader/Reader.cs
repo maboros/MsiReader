@@ -87,7 +87,7 @@ namespace MsiReader
                 return 1;
             }
         }
-        public static string GetItemData(String fullPathName,ref List<String>dataString,String nameOfItem)
+        public static string GetItemData(String fullPathName,ref List<String>dataString,uint indexOfItem)
         {
             try
             {
@@ -110,9 +110,9 @@ namespace MsiReader
                     //MsiPull.DrawFromMsi(fullPathName, ref allFileNames);
                     //String data=allFileNames.Find(x => x == fullPathName);
                     //return data;
-                    
+
                     //int capacity = dataBuf.Length;
-                    int capacity = MsiRecordDataSize(hRecord, 1);
+                    int capacity = MsiRecordDataSize(hRecord,(int) indexOfItem+1);
                     var dataBuf = new byte[capacity];
                     //for (int i = 0; i < dataBuf.Length; i++)
                     //{
@@ -120,7 +120,7 @@ namespace MsiReader
                     //    String toAdd = Environment.NewLine+dataBuf[i].ToString();
                     //    dataString.Add(toAdd);
                     //}
-                    if (MsiRecordReadStream(hRecord, 1, dataBuf, ref capacity) != Win32Error.NO_ERROR)
+                    if (MsiRecordReadStream(hRecord, indexOfItem+1, dataBuf, ref capacity) != Win32Error.NO_ERROR)
                     {
                         return "Failed to read stream";
                     }
