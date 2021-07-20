@@ -79,15 +79,16 @@ namespace MsiReaderForm
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            textBox1.Text = "";
             if (e.Node.Level == 0)
             {
                 return;
             }
             List<String> dataString = new List<String>();
-            textBox1.Text = MsiPull.GetItemData(fullPathName,ref dataString,(uint)e.Node.Index);
+            MsiPull.GetItemData(fullPathName,ref dataString,e.Node.Text,ref dataString);
             foreach(var item in dataString)
             {
-                textBox1.Text += item.ToString();
+                textBox1.Text += item.ToString()+Environment.NewLine;
             }
         }
     }

@@ -44,10 +44,15 @@ namespace MsiReader
         static extern int MsiRecordGetString(IntPtr hRecord, int iField, StringBuilder szValueBuf, ref int pcchValueBuf);
 
         [DllImport("msi.dll", ExactSpelling = true)]
-        static extern uint MsiRecordReadStream(IntPtr hRecord, uint iField,[Out] byte[] szDataBuf, ref int pcbDataBuf);
+        static extern int MsiRecordDataSize(IntPtr hRecord, int iField);
+
+        const int MSICOLINFO_NAMES = 0;  // return column names
+        const int MSICOLINFO_TYPES = 1;  // return column definitions, datatype code followed by width
+        [DllImport("msi.dll", ExactSpelling = true)]
+        static extern uint MsiViewGetColumnInfo(IntPtr hView, int eColumnInfo, out IntPtr hRecord);
 
         [DllImport("msi.dll", ExactSpelling = true)]
-        static extern int MsiRecordDataSize(IntPtr hRecord, int iField);
+        static extern int MsiRecordGetFieldCount(IntPtr hRecord);
 
         public static int DrawFromMsi(String fileName,ref List<String> returnNames)
         {
@@ -87,51 +92,51 @@ namespace MsiReader
                 return 1;
             }
         }
-        public static string GetItemData(String fullPathName,ref List<String>dataString,uint indexOfItem)
+        public static int GetItemData(String fullPathName,ref List<String>dataString,String tableName,ref List<String> dataList)
         {
             try
             {
                 if (MsiOpenDatabase(fullPathName, IntPtr.Zero, out IntPtr hDatabase) != Win32Error.NO_ERROR)
                 {
                     Console.WriteLine(fullPathName);
-                    return "Failed to open database";
+                    return 1;
                 }
 
-                if (MsiDatabaseOpenView(hDatabase, "SELECT `Name` FROM _Tables", out IntPtr hView) != Win32Error.NO_ERROR)
+                if (MsiDatabaseOpenView(hDatabase, $"SELECT * FROM `{tableName}`", out IntPtr hView) != Win32Error.NO_ERROR)
                 {
-                    return "Failed to open view";
+                    return 2;
                 }
-
                 MsiViewExecute(hView, IntPtr.Zero);
-
                 while (MsiViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
                 {
-                    //List<String> allFileNames = new List<String>();
-                    //MsiPull.DrawFromMsi(fullPathName, ref allFileNames);
-                    //String data=allFileNames.Find(x => x == fullPathName);
-                    //return data;
-
-                    //int capacity = dataBuf.Length;
-                    int capacity = MsiRecordDataSize(hRecord,(int) indexOfItem+1);
-                    var dataBuf = new byte[capacity];
-                    //for (int i = 0; i < dataBuf.Length; i++)
-                    //{
-                    //    dataBuf[i] = 0x20;
-                    //    String toAdd = Environment.NewLine+dataBuf[i].ToString();
-                    //    dataString.Add(toAdd);
-                    //}
-                    if (MsiRecordReadStream(hRecord, indexOfItem+1, dataBuf, ref capacity) != Win32Error.NO_ERROR)
+                    // dohvaća informacije o imenima stupaca; ako je drugi argument 1, vratit će 
+                    // informacije o tipu u pojedinim stupcima (https://docs.microsoft.com/en-us/windows/win32/msi/column-definition-format)
+                    MsiViewGetColumnInfo(hView, 0, out IntPtr hColumnRecord);
+                    // dohvaća broj stupaca
+                    var fieldCount = MsiRecordGetFieldCount(hRecord);
+                    // za svaki stupac...
+                    for (int i = 0; i < fieldCount; ++i)
                     {
-                        return "Failed to read stream";
+                        // ..dohvaća duljinu imena...
+                        var dataSize = MsiRecordDataSize(hColumnRecord, i + 1);
+                        // ...i samo ime
+                        StringBuilder buffer = new StringBuilder(dataSize + 1);
+                        int capacity = buffer.Capacity;
+                        if (MsiRecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
+                        {
+                            return 3;
+                        }
+                        dataList.Add(buffer.ToString());
                     }
-                    dataString.Add(dataBuf.ToString());
+                   
+
                 }
-                return "No fail";
+                return 0;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return "Exception";
+                return 4;
             }
         }
         public static List<SummaryInfoProps> getSummaryInformation(String fileName)
