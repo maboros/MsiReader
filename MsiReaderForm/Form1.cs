@@ -90,6 +90,7 @@ namespace MsiReaderForm
             {
                 textBox1.Text += item.ToString()+Environment.NewLine;
             }
+            //TODO:: replace textbox with another listbox variable sizes and have GetItemData fetch listview items or keep it a list but have it return a number of columns
         }
     }
 }

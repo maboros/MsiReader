@@ -33,6 +33,9 @@ namespace MsiReader
         [DllImport("msi.dll", ExactSpelling = true)]
         static extern int MsiRecordGetFieldCount(IntPtr hRecord);
 
+        [DllImport("msi.dll", ExactSpelling = true)]
+        static extern int MsiRecordGetInteger(IntPtr hRecord, int iField);
+
         public static uint OpenDatabase(string szDatabasePath, IntPtr phPersist, out IntPtr phDatabase)
         {
             return MsiOpenDatabase(szDatabasePath, phPersist, out phDatabase);
@@ -64,6 +67,10 @@ namespace MsiReader
         public static int RecordDataSize(IntPtr hRecord, int iField)
         {
             return MsiRecordDataSize(hRecord,iField);
+        }
+        public static int RecordGetInteger(IntPtr hRecord, int iField)
+        {
+            return MsiRecordGetInteger(hRecord,iField);
         }
     }
 }
