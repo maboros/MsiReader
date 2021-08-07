@@ -67,7 +67,7 @@ namespace MsiReader
                 return 1;
             }
         }
-        public static int GetItemData(String fullPathName,ref List<String>dataString,String tableName,ref List<String> dataList)
+        public static int GetItemData(String fullPathName,String tableName,ref List<String> columnList,ref int columnCount,ref List<String> dataList)
         {
             try
             {
@@ -82,15 +82,45 @@ namespace MsiReader
                     return 2;
                 }
                 Msi.ViewExecute(hView, IntPtr.Zero);
-                while (Msi.ViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
+                if (Msi.ViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
                 {
                     // dohvaća informacije o imenima stupaca; ako je drugi argument 1, vratit će 
                     // informacije o tipu u pojedinim stupcima (https://docs.microsoft.com/en-us/windows/win32/msi/column-definition-format)
-                    Msi.ViewGetColumnInfo(hView, 1, out IntPtr hColumnRecord);
+                    Msi.ViewGetColumnInfo(hView, 0, out IntPtr hColumnRecord);
                     // dohvaća broj stupaca
-                    var fieldCount = Msi.RecordGetFieldCount(hRecord);
+                    columnCount = Msi.RecordGetFieldCount(hRecord);
                     // za svaki stupac...
-                    for (int i = 0; i < fieldCount; ++i)
+                    if (dataList.Count == 0)
+                    {
+                        for (int i = 0; i < columnCount; ++i)
+                        {
+                            // ..dohvaća duljinu imena...
+                            var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
+                            // ...i samo ime
+                            StringBuilder buffer = new StringBuilder(dataSize + 1);
+                            int capacity = buffer.Capacity;
+                            if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
+                            {
+                                return -1;
+                            }
+                            columnList.Add(buffer.ToString());
+                        }
+                    }
+                }
+                if (Msi.DatabaseOpenView(hDatabase, $"SELECT * FROM `{tableName}`", out IntPtr hView2) != Win32Error.NO_ERROR)
+                {
+                    return 2;
+                }
+                Msi.ViewExecute(hView2, IntPtr.Zero);
+                while (Msi.ViewFetch(hView2, out IntPtr hRecord1) != Win32Error.ERROR_NO_MORE_ITEMS)
+                {
+                    // dohvaća informacije o imenima stupaca; ako je drugi argument 1, vratit će 
+                    // informacije o tipu u pojedinim stupcima (https://docs.microsoft.com/en-us/windows/win32/msi/column-definition-format)
+                    Msi.ViewGetColumnInfo(hView2, 1, out IntPtr hColumnRecord);
+                    // dohvaća broj stupaca
+                    columnCount = Msi.RecordGetFieldCount(hRecord1);
+                    // za svaki stupac...
+                    for (int i = 0; i < columnCount; ++i)
                     {
                         // ..dohvaća duljinu imena...
                         var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
@@ -103,7 +133,7 @@ namespace MsiReader
                         }
                         if (buffer.ToString().ToLower().Equals("i2") || buffer.ToString().ToLower().Equals("i4"))
                         {
-                            int num = Msi.RecordGetInteger(hRecord, i + 1);
+                            int num = Msi.RecordGetInteger(hRecord1, i + 1);
                             if (num == Win32Error.MSI_NULL_INTEGER)
                             {
                                 return 4;
@@ -112,13 +142,13 @@ namespace MsiReader
                         }
                         else if (buffer.ToString().ToLower().Equals("v0"))
                         {
-                            Object obj;
+                            dataList.Add("Binary stream");
                         }
                         else
                         {
-                            StringBuilder dataStr=new StringBuilder(dataSize+1);
+                            StringBuilder dataStr = new StringBuilder(dataSize + 1);
                             int cap = dataStr.Capacity;
-                            if(Msi.RecordGetString(hColumnRecord, i + 1, dataStr, ref cap) != Win32Error.NO_ERROR)
+                            if (Msi.RecordGetString(hColumnRecord, i + 1, dataStr, ref cap) != Win32Error.NO_ERROR)
                             {
                                 return 6;
                             }

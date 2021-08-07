@@ -79,16 +79,33 @@ namespace MsiReaderForm
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            textBox1.Text = "";
+            listView2.Items.Clear();
+            listView2.Columns.Clear();
             if (e.Node.Level == 0)
             {
                 return;
             }
+            List<String> columnString = new List<String>();
             List<String> dataString = new List<String>();
-            MsiPull.GetItemData(fullPathName,ref dataString,e.Node.Text,ref dataString);
-            foreach(var item in dataString)
+            int columnCount=0;
+            MsiPull.GetItemData(fullPathName,e.Node.Text,ref columnString,ref columnCount,ref dataString);
+            foreach(var item in columnString)
             {
-                textBox1.Text += item.ToString()+Environment.NewLine;
+                listView2.Columns.Add(item.ToString());
+            }
+            
+            for(int i = 0;i< dataString.Count;i+=columnCount)
+            {
+                int count = i;
+                ListViewItem item = new ListViewItem(dataString[count]);
+                count++;
+                while (count < i + columnCount)
+                {
+                    item.SubItems.Add(dataString[count]);
+                    count++;
+                }
+                listView2.Items.AddRange(new ListViewItem[] { item });
+                break;
             }
             //TODO:: replace textbox with another listbox variable sizes and have GetItemData fetch listview items or keep it a list but have it return a number of columns
         }
