@@ -36,6 +36,9 @@ namespace MsiReader
         [DllImport("msi.dll", ExactSpelling = true)]
         static extern int MsiRecordGetInteger(IntPtr hRecord, int iField);
 
+        [DllImport("msi.dll", ExactSpelling = true)]
+        static extern uint MsiRecordReadStream(IntPtr hRecord, uint iField,[Out] byte[] szDataBuf, ref int pcbDataBuf);
+
         public static uint OpenDatabase(string szDatabasePath, IntPtr phPersist, out IntPtr phDatabase)
         {
             return MsiOpenDatabase(szDatabasePath, phPersist, out phDatabase);
@@ -71,6 +74,10 @@ namespace MsiReader
         public static int RecordGetInteger(IntPtr hRecord, int iField)
         {
             return MsiRecordGetInteger(hRecord,iField);
+        }
+        public static uint RecordReadStream(IntPtr hRecord, uint iField, [Out] byte[] szDataBuf, ref int pcbDataBuf)
+        {
+            return MsiRecordReadStream(hRecord, iField, szDataBuf, ref pcbDataBuf);
         }
     }
 }

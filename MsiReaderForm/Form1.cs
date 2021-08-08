@@ -25,6 +25,8 @@ namespace MsiReaderForm
         {
             treeView1.Nodes.Clear();
             listView1.Items.Clear();
+            listView2.Items.Clear();
+            listView2.Columns.Clear();
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 InitialDirectory = @"C:\",
@@ -106,6 +108,8 @@ namespace MsiReaderForm
                 }
                 listView2.Items.AddRange(new ListViewItem[] { item });
             }
+            listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             //TODO:: replace textbox with another listbox variable sizes and have GetItemData fetch listview items or keep it a list but have it return a number of columns
         }
     }

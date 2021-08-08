@@ -150,17 +150,27 @@ namespace MsiReader
                         }
                         else if (buffer.ToString().ToLower().Equals("v0"))
                         {
-                            dataList.Add("Binary stream");
+                            
+                            byte[] szBuffer= new byte[1024];
+                            int cap = szBuffer.Length;
+                            while (capacity == 1024) {
+                                Msi.RecordReadStream(hRecord1, 1, szBuffer, ref cap);
+                                    }
+                            StringBuilder dataStr = new StringBuilder(1024);
+                            foreach (var letter in szBuffer)
+                            {
+                                dataStr.Append(letter.ToString());
+                                dataStr.Append(";");
+                            }
+                            dataList.Add(dataStr.ToString());
                         }
                         else
                         {
-                            StringBuilder dataStr = new StringBuilder(dataSize + 1);
+                            StringBuilder dataStr = new StringBuilder(255);
                             int cap = dataStr.Capacity;
-                            if (Msi.RecordGetString(hColumnRecord, i + 1, dataStr, ref cap) != Win32Error.NO_ERROR)
-                            {
-                                return 6;
-                            }
+                            Msi.RecordGetString(hRecord1, i + 1, dataStr, ref cap);
                             dataList.Add(dataStr.ToString());
+                            
                         }
 
                         //if (i == 0) { dataList.Add(buffer.ToString()); }
