@@ -94,7 +94,7 @@ namespace MsiReaderForm
                 listView2.Columns.Add(item.ToString());
             }
             
-            for(int i = 0;i< dataString.Count;i+=columnCount)
+            for(int i = 0; i< dataString.Count; i=i+columnCount)
             {
                 int count = i;
                 ListViewItem item = new ListViewItem(dataString[count]);
@@ -105,7 +105,6 @@ namespace MsiReaderForm
                     count++;
                 }
                 listView2.Items.AddRange(new ListViewItem[] { item });
-                break;
             }
             //TODO:: replace textbox with another listbox variable sizes and have GetItemData fetch listview items or keep it a list but have it return a number of columns
         }

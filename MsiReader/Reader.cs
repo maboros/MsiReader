@@ -82,13 +82,17 @@ namespace MsiReader
                     return 2;
                 }
                 Msi.ViewExecute(hView, IntPtr.Zero);
-                if (Msi.ViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
+                Msi.ViewFetch(hView, out IntPtr hRecord);
                 {
                     // dohvaća informacije o imenima stupaca; ako je drugi argument 1, vratit će 
                     // informacije o tipu u pojedinim stupcima (https://docs.microsoft.com/en-us/windows/win32/msi/column-definition-format)
                     Msi.ViewGetColumnInfo(hView, 0, out IntPtr hColumnRecord);
                     // dohvaća broj stupaca
                     columnCount = Msi.RecordGetFieldCount(hRecord);
+                    if (columnCount <= 0)
+                    {
+                        columnCount = 30;
+                    }
                     // za svaki stupac...
                     if (dataList.Count == 0)
                     {
@@ -103,7 +107,10 @@ namespace MsiReader
                             {
                                 return -1;
                             }
-                            columnList.Add(buffer.ToString());
+                            if (buffer.ToString()!= "")
+                            {
+                                columnList.Add(buffer.ToString());
+                            }
                         }
                     }
                 }
@@ -136,7 +143,8 @@ namespace MsiReader
                             int num = Msi.RecordGetInteger(hRecord1, i + 1);
                             if (num == Win32Error.MSI_NULL_INTEGER)
                             {
-                                return 4;
+                                dataList.Add("");
+                                continue;
                             }
                             dataList.Add(num.ToString());
                         }
@@ -163,7 +171,7 @@ namespace MsiReader
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return 4;
+                return 7;
             }
         }
         public static List<SummaryInfoProps> getSummaryInformation(String fileName)
