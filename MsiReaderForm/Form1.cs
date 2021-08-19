@@ -110,7 +110,6 @@ namespace MsiReaderForm
             }
             listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-            //TODO:: replace textbox with another listbox variable sizes and have GetItemData fetch listview items or keep it a list but have it return a number of columns
         }
     }
 }

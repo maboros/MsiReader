@@ -84,23 +84,17 @@ namespace MsiReader
                 Msi.ViewExecute(hView, IntPtr.Zero);
                 Msi.ViewFetch(hView, out IntPtr hRecord);
                 {
-                    // dohvaća informacije o imenima stupaca; ako je drugi argument 1, vratit će 
-                    // informacije o tipu u pojedinim stupcima (https://docs.microsoft.com/en-us/windows/win32/msi/column-definition-format)
-                    Msi.ViewGetColumnInfo(hView, 0, out IntPtr hColumnRecord);
-                    // dohvaća broj stupaca
+                    Msi.ViewGetColumnInfo(hView, Msi.MSICOLINFO_NAMES, out IntPtr hColumnRecord);
                     columnCount = Msi.RecordGetFieldCount(hRecord);
                     if (columnCount <= 0)
                     {
                         columnCount = 30;
                     }
-                    // za svaki stupac...
                     if (dataList.Count == 0)
                     {
                         for (int i = 0; i < columnCount; ++i)
                         {
-                            // ..dohvaća duljinu imena...
                             var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
-                            // ...i samo ime
                             StringBuilder buffer = new StringBuilder(dataSize + 1);
                             int capacity = buffer.Capacity;
                             if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
@@ -121,17 +115,11 @@ namespace MsiReader
                 Msi.ViewExecute(hView2, IntPtr.Zero);
                 while (Msi.ViewFetch(hView2, out IntPtr hRecord1) != Win32Error.ERROR_NO_MORE_ITEMS)
                 {
-                    // dohvaća informacije o imenima stupaca; ako je drugi argument 1, vratit će 
-                    // informacije o tipu u pojedinim stupcima (https://docs.microsoft.com/en-us/windows/win32/msi/column-definition-format)
-                    Msi.ViewGetColumnInfo(hView2, 1, out IntPtr hColumnRecord);
-                    // dohvaća broj stupaca
+                    Msi.ViewGetColumnInfo(hView2, Msi.MSICOLINFO_TYPES, out IntPtr hColumnRecord);
                     columnCount = Msi.RecordGetFieldCount(hRecord1);
-                    // za svaki stupac...
                     for (int i = 0; i < columnCount; ++i)
                     {
-                        // ..dohvaća duljinu imena...
                         var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
-                        // ...i samo ime
                         StringBuilder buffer = new StringBuilder(dataSize + 1);
                         int capacity = buffer.Capacity;
                         if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
@@ -150,19 +138,7 @@ namespace MsiReader
                         }
                         else if (buffer.ToString().ToLower().Equals("v0"))
                         {
-                            
-                            byte[] szBuffer= new byte[1024];
-                            int cap = szBuffer.Length;
-                            while (capacity == 1024) {
-                                Msi.RecordReadStream(hRecord1, 1, szBuffer, ref cap);
-                                    }
-                            StringBuilder dataStr = new StringBuilder(1024);
-                            foreach (var letter in szBuffer)
-                            {
-                                dataStr.Append(letter.ToString());
-                                dataStr.Append(";");
-                            }
-                            dataList.Add(dataStr.ToString());
+                            dataList.Add("[Binary data]");
                         }
                         else
                         {
@@ -172,8 +148,6 @@ namespace MsiReader
                             dataList.Add(dataStr.ToString());
                             
                         }
-
-                        //if (i == 0) { dataList.Add(buffer.ToString()); }
                     }
                 }
                 return 0;

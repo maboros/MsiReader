@@ -25,8 +25,8 @@ namespace MsiReader
         [DllImport("msi.dll", ExactSpelling = true)]
         static extern int MsiRecordDataSize(IntPtr hRecord, int iField);
 
-        const int MSICOLINFO_NAMES = 0;  // return column names
-        const int MSICOLINFO_TYPES = 1;  // return column definitions, datatype code followed by width
+        public const int MSICOLINFO_NAMES = 0;  
+        public const int MSICOLINFO_TYPES = 1;  
         [DllImport("msi.dll", ExactSpelling = true)]
         static extern uint MsiViewGetColumnInfo(IntPtr hView, int eColumnInfo, out IntPtr hRecord);
 
