@@ -76,6 +76,8 @@ namespace MsiReaderForm
                 viewItem.Tag = property;
                 listView1.Items.Add(viewItem);
             }
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
         }
 

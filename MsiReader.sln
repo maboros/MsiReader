@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsiReader", "MsiReader\MsiR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsiReaderForm", "MsiReaderForm\MsiReaderForm.csproj", "{8DF7AE03-7064-4A00-BC4D-7D04FADFD6F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestsMsiReader", "UnitTestsMsiReader\UnitTestsMsiReader.csproj", "{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestsMsiReader", "UnitTestsMsiReader\UnitTestsMsiReader.csproj", "{4A93FC40-A0D1-444F-B0BB-C6E8665ED836}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

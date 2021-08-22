@@ -47,7 +47,7 @@ namespace MsiReaderForm
             this.treeView1.Enabled = false;
             this.treeView1.Location = new System.Drawing.Point(13, 28);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(433, 358);
+            this.treeView1.Size = new System.Drawing.Size(248, 358);
             this.treeView1.TabIndex = 0;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
@@ -82,9 +82,9 @@ namespace MsiReaderForm
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(453, 28);
+            this.listView1.Location = new System.Drawing.Point(267, 28);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(318, 358);
+            this.listView1.Size = new System.Drawing.Size(504, 358);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -97,7 +97,7 @@ namespace MsiReaderForm
             // Value
             // 
             this.Value.Text = "Value";
-            this.Value.Width = 200;
+            this.Value.Width = 900;
             // 
             // label2
             // 
@@ -120,7 +120,7 @@ namespace MsiReaderForm
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(453, 9);
+            this.label4.Location = new System.Drawing.Point(267, 10);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(127, 15);
             this.label4.TabIndex = 7;
