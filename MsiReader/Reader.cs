@@ -45,9 +45,7 @@ namespace MsiReader
                     Console.WriteLine("Failed to open view");
                     return 1;
                 }
-
                 Msi.ViewExecute(hView, IntPtr.Zero);
-
                 while (Msi.ViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
                 {
                     StringBuilder buffer = new StringBuilder(256);
@@ -76,7 +74,6 @@ namespace MsiReader
                     Console.WriteLine(fullPathName);
                     return 1;
                 }
-
                 if (Msi.DatabaseOpenView(hDatabase, $"SELECT * FROM `{tableName}`", out IntPtr hView) != Win32Error.NO_ERROR)
                 {
                     return 2;
@@ -145,8 +142,7 @@ namespace MsiReader
                             StringBuilder dataStr = new StringBuilder(255);
                             int cap = dataStr.Capacity;
                             Msi.RecordGetString(hRecord1, i + 1, dataStr, ref cap);
-                            dataList.Add(dataStr.ToString());
-                            
+                            dataList.Add(dataStr.ToString()); 
                         }
                     }
                 }

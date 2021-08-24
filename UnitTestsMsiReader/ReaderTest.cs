@@ -17,7 +17,7 @@ namespace UnitTestsMsiReader
         }
 
         [Test]
-        public void FileIsLoadedAndDrawFromMsiReturns0()
+        public void DrawFromMsiReturns0()
         {
             List<String> allFileNames = new List<String>();
             Assert.AreEqual(0, Reader.DrawFromMsi(projectdir + "\\" + "appData" + "\\68b3ac.msi", ref allFileNames));
@@ -29,6 +29,14 @@ namespace UnitTestsMsiReader
             List<String> allFileNames = new List<String>();
             Reader.DrawFromMsi(projectdir + "\\" + "appData" + "\\68b3ac.msi", ref allFileNames);
             Assert.AreEqual("_Validation", allFileNames.First());
+        }
+        [Test]
+        public void GetItemDataReturns0()
+        {
+            List<String> columnString = new List<String>();
+            List<String> dataString = new List<String>();
+            int columnCount = 0;
+            Assert.AreEqual(0, Reader.GetItemData(projectdir + "\\" + "appData" + "\\68b3ac.msi", "_Validation", ref columnString, ref columnCount, ref dataString)););
         }
         [Test]
         public void FirstItemInGetItemDataReturn10ColumnsFor_Validation()
