@@ -160,17 +160,27 @@ namespace MsiReader
         }
         public static List<SummaryInfoProps> GetSummaryInformation(String fileName)
         {
-            CompoundFile cf = new CompoundFile(fileName);
-            CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
-            List < SummaryInfoProps >fullList= new List<SummaryInfoProps>();
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            var container = fStream.AsOLEPropertiesContainer();
-            foreach (var property in container.Properties)
+            try
             {
-                fullList.Add(new SummaryInfoProps(property.PropertyName.ToString(),property.Value.ToString()));
+                CompoundFile cf = new CompoundFile(fileName);
+                CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
+                List<SummaryInfoProps> fullList = new List<SummaryInfoProps>();
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                var container = fStream.AsOLEPropertiesContainer();
+                foreach (var property in container.Properties)
+                {
+                    fullList.Add(new SummaryInfoProps(property.PropertyName.ToString(), property.Value.ToString()));
+                }
+                cf.Close();
+                return fullList;
             }
-            cf.Close();
-            return fullList;
+            catch(Exception e)
+            {
+                List<SummaryInfoProps> fullList = new List<SummaryInfoProps>();
+                fullList.Add(new SummaryInfoProps("Error", e.Message.ToString()));
+                fullList.Add(new SummaryInfoProps("Advice", "Please make sure the file isn't corrupted and is a .msi file"));
+                return fullList;
+            }
         }
     }   
 }
