@@ -67,7 +67,7 @@ namespace MsiReaderForm
                 treeView1.Nodes[0].Nodes.Add(name.ToString());
             }
             treeView1.Enabled = true;
-           var propertyList = Reader.getSummaryInformation(fullPathName);
+           var propertyList = Reader.GetSummaryInformation(fullPathName);
 
             foreach (var property in propertyList)
             {

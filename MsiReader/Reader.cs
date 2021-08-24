@@ -158,7 +158,7 @@ namespace MsiReader
                 return 7;
             }
         }
-        public static List<SummaryInfoProps> getSummaryInformation(String fileName)
+        public static List<SummaryInfoProps> GetSummaryInformation(String fileName)
         {
             CompoundFile cf = new CompoundFile(fileName);
             CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");

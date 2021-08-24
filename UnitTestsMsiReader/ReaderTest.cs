@@ -78,7 +78,7 @@ namespace UnitTestsMsiReader
         [Test]
         public void GetSummaryInformationPullsFirstItem()
         {
-            var list = Reader.getSummaryInformation(projectdir + "\\" + "appData" + "\\68b3ac.msi");
+            var list = Reader.GetSummaryInformation(projectdir + "\\" + "appData" + "\\68b3ac.msi");
             Assert.AreEqual("CodePageString", list.First().name);
             Assert.AreEqual("1252", list.First().value);
         }
