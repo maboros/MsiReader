@@ -36,7 +36,7 @@ namespace UnitTestsMsiReader
             List<String> columnString = new List<String>();
             List<String> dataString = new List<String>();
             int columnCount = 0;
-            Assert.AreEqual(0, Reader.GetItemData(projectdir + "\\" + "appData" + "\\68b3ac.msi", "_Validation", ref columnString, ref columnCount, ref dataString)););
+            Assert.AreEqual(0, Reader.GetItemData(projectdir + "\\" + "appData" + "\\68b3ac.msi", "_Validation", ref columnString, ref columnCount, ref dataString));
         }
         [Test]
         public void FirstItemInGetItemDataReturn10ColumnsFor_Validation()
