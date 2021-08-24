@@ -27,7 +27,7 @@ namespace MsiReader
             this.value = value;
         }
     }
-    public class MsiPull
+    public class Reader
     {
         public static int DrawFromMsi(String fileName,ref List<String> returnNames)
         {
