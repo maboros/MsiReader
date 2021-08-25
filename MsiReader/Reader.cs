@@ -1,10 +1,8 @@
 ﻿
 using System;
 using OpenMcdf;
-using System.IO;
 using System.Text;
 using OpenMcdf.Extensions;
-using OpenMcdf.Extensions.OLEProperties;
 using System.Collections.Generic;
 
 
@@ -161,7 +159,7 @@ namespace MsiReader
                 CompoundFile cf = new CompoundFile(fileName);
                 CFStream fStream = cf.RootStorage.GetStream("\u0005SummaryInformation");
                 List<SummaryInfoProps> fullList = new List<SummaryInfoProps>();
-                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 var container = fStream.AsOLEPropertiesContainer();
                 foreach (var property in container.Properties)
                 {
