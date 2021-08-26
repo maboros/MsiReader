@@ -100,22 +100,19 @@ namespace MsiReader
             {
                 columnCount = 30;
             }
-            if (columnList.Count == 0)
+            for (int i = 0; i < columnCount; ++i)
             {
-                for (int i = 0; i < columnCount; ++i)
+                var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
+                StringBuilder buffer = new StringBuilder(dataSize + 1);
+                int capacity = buffer.Capacity;
+                if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
                 {
-                    var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
-                    StringBuilder buffer = new StringBuilder(dataSize + 1);
-                    int capacity = buffer.Capacity;
-                    if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
-                    {
-                        Console.WriteLine("Failed to get record string");
-                        return 3;
-                    }
-                    if (buffer.ToString() != "")
-                    {
-                        columnList.Add(buffer.ToString());
-                    }
+                    Console.WriteLine("Failed to get record string");
+                    return 3;
+                }
+                if (buffer.ToString() != "")
+                {
+                    columnList.Add(buffer.ToString());
                 }
             }
             return 0;
