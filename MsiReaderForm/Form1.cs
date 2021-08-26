@@ -55,16 +55,6 @@ namespace MsiReaderForm
         {
             String fileName = Path.GetFileNameWithoutExtension(fullPathName);
             treeView1.Nodes.Add(fileName);
-            List<String> allFileNames = new List<String>();
-            if(Reader.DrawFromMsi(fullPathName, ref allFileNames)!=0)
-            {
-                return;
-            }
-            foreach (var name in allFileNames)
-            {
-                treeView1.Nodes[0].Nodes.Add(name.ToString());
-            }
-            treeView1.Enabled = true;
             var propertyList = Reader.GetSummaryInformation(fullPathName);
             foreach (var property in propertyList)
             {
@@ -75,6 +65,18 @@ namespace MsiReaderForm
             }
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            List<String> allFileNames = new List<String>();
+            if(Reader.DrawFromMsi(fullPathName, ref allFileNames)!=0)
+            {
+                treeView1.Enabled = false;
+                return;
+            }
+            foreach (var name in allFileNames)
+            {
+                treeView1.Nodes[0].Nodes.Add(name.ToString());
+            }
+            treeView1.Enabled = true;
+            
 
         }
 
