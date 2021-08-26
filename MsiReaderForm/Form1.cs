@@ -53,22 +53,19 @@ namespace MsiReaderForm
 
         private void FillView()
         {
-            treeView1.Nodes.Clear();
-            listView1.Items.Clear();
             String fileName = Path.GetFileNameWithoutExtension(fullPathName);
-            treeView1.BeginUpdate();
             treeView1.Nodes.Add(fileName);
-            treeView1.EndUpdate();
-            
             List<String> allFileNames = new List<String>();
-            Reader.DrawFromMsi(fullPathName, ref allFileNames);
+            if(Reader.DrawFromMsi(fullPathName, ref allFileNames)!=0)
+            {
+                return;
+            }
             foreach (var name in allFileNames)
             {
                 treeView1.Nodes[0].Nodes.Add(name.ToString());
             }
             treeView1.Enabled = true;
-           var propertyList = Reader.GetSummaryInformation(fullPathName);
-
+            var propertyList = Reader.GetSummaryInformation(fullPathName);
             foreach (var property in propertyList)
             {
                 var row = new string[] { property.name, property.value };
@@ -92,7 +89,10 @@ namespace MsiReaderForm
             List<String> columnString = new List<String>();
             List<String> dataString = new List<String>();
             int columnCount=0;
-            Reader.GetItemData(fullPathName,e.Node.Text,ref columnString,ref columnCount,ref dataString);
+            if(Reader.GetItemData(fullPathName,e.Node.Text,ref columnString,ref columnCount,ref dataString)!=0)
+            {
+                return;
+            }
             foreach(var item in columnString)
             {
                 listView2.Columns.Add(item.ToString());

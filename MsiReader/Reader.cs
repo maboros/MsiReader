@@ -33,7 +33,6 @@ namespace MsiReader
             {
                 if (Msi.OpenDatabase(fileName, IntPtr.Zero, out IntPtr hDatabase) != Win32Error.NO_ERROR)
                 {
-                    Console.WriteLine(fileName);
                     Console.WriteLine("Failed to open dabase");
                     return 1;
                 }
@@ -69,89 +68,101 @@ namespace MsiReader
             {
                 if (Msi.OpenDatabase(fullPathName, IntPtr.Zero, out IntPtr hDatabase) != Win32Error.NO_ERROR)
                 {
-                    Console.WriteLine(fullPathName);
+                    Console.WriteLine("Failed to open dabase");
                     return 1;
                 }
                 if (Msi.DatabaseOpenView(hDatabase, $"SELECT * FROM `{tableName}`", out IntPtr hView) != Win32Error.NO_ERROR)
                 {
+                    Console.WriteLine("Failed to open view");
                     return 2;
                 }
                 Msi.ViewExecute(hView, IntPtr.Zero);
-                Msi.ViewFetch(hView, out IntPtr hRecord);
+                int x=GetTableColumnInfo(hView, ref columnCount, ref columnList);
+                if (x != 0)
                 {
-                    Msi.ViewGetColumnInfo(hView, Msi.MSICOLINFO_NAMES, out IntPtr hColumnRecord);
-                    columnCount = Msi.RecordGetFieldCount(hRecord);
-                    if (columnCount <= 0)
-                    {
-                        columnCount = 30;
-                    }
-                    if (dataList.Count == 0)
-                    {
-                        for (int i = 0; i < columnCount; ++i)
-                        {
-                            var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
-                            StringBuilder buffer = new StringBuilder(dataSize + 1);
-                            int capacity = buffer.Capacity;
-                            if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
-                            {
-                                return 3;
-                            }
-                            if (buffer.ToString()!= "")
-                            {
-                                columnList.Add(buffer.ToString());
-                            }
-                        }
-                    }
+                    return x;
                 }
-                if (Msi.DatabaseOpenView(hDatabase, $"SELECT * FROM `{tableName}`", out IntPtr hView2) != Win32Error.NO_ERROR)
-                {
-                    return 4;
-                }
-                Msi.ViewExecute(hView2, IntPtr.Zero);
-                while (Msi.ViewFetch(hView2, out IntPtr hRecord1) != Win32Error.ERROR_NO_MORE_ITEMS)
-                {
-                    Msi.ViewGetColumnInfo(hView2, Msi.MSICOLINFO_TYPES, out IntPtr hColumnRecord);
-                    columnCount = Msi.RecordGetFieldCount(hRecord1);
-                    for (int i = 0; i < columnCount; ++i)
-                    {
-                        var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
-                        StringBuilder buffer = new StringBuilder(dataSize + 1);
-                        int capacity = buffer.Capacity;
-                        if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
-                        {
-                            return 5;
-                        }
-                        if (buffer.ToString().ToLower().Equals("i2") || buffer.ToString().ToLower().Equals("i4"))
-                        {
-                            int num = Msi.RecordGetInteger(hRecord1, i + 1);
-                            if (num == Win32Error.MSI_NULL_INTEGER)
-                            {
-                                dataList.Add("");
-                                continue;
-                            }
-                            dataList.Add(num.ToString());
-                        }
-                        else if (buffer.ToString().ToLower().Equals("v0"))
-                        {
-                            dataList.Add("[Binary data]");
-                        }
-                        else
-                        {
-                            StringBuilder dataStr = new StringBuilder(255);
-                            int cap = dataStr.Capacity;
-                            Msi.RecordGetString(hRecord1, i + 1, dataStr, ref cap);
-                            dataList.Add(dataStr.ToString()); 
-                        }
-                    }
-                }
-                return 0;
+                x=GetTableData(hView,ref columnCount,ref dataList);
+                return x;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return 6;
+                return 5;
             }
         }
+        private static int GetTableColumnInfo(IntPtr hView,ref int columnCount,ref List<String> columnList)
+        {
+            Msi.ViewFetch(hView, out IntPtr hRecord);
+            Msi.ViewGetColumnInfo(hView, Msi.MSICOLINFO_NAMES, out IntPtr hColumnRecord);
+            columnCount = Msi.RecordGetFieldCount(hRecord);
+            if (columnCount <= 0)
+            {
+                columnCount = 30;
+            }
+            if (columnList.Count == 0)
+            {
+                for (int i = 0; i < columnCount; ++i)
+                {
+                    var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
+                    StringBuilder buffer = new StringBuilder(dataSize + 1);
+                    int capacity = buffer.Capacity;
+                    if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
+                    {
+                        Console.WriteLine("Failed to get record string");
+                        return 3;
+                    }
+                    if (buffer.ToString() != "")
+                    {
+                        columnList.Add(buffer.ToString());
+                    }
+                }
+            }
+            return 0;
+        }
+        private static int GetTableData(IntPtr hView, ref int columnCount, ref List<String> dataList)
+        {
+            Msi.ViewExecute(hView, IntPtr.Zero);
+            while (Msi.ViewFetch(hView, out IntPtr hRecord1) != Win32Error.ERROR_NO_MORE_ITEMS)
+            {
+                Msi.ViewGetColumnInfo(hView, Msi.MSICOLINFO_TYPES, out IntPtr hColumnRecord);
+                columnCount = Msi.RecordGetFieldCount(hRecord1);
+                for (int i = 0; i < columnCount; ++i)
+                {
+                    var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
+                    StringBuilder buffer = new StringBuilder(dataSize + 1);
+                    int capacity = buffer.Capacity;
+                    if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
+                    {
+                        Console.WriteLine("Failed to get record string");
+                        return 4;
+                    }
+                    if (buffer.ToString().ToLower().Equals("i2") || buffer.ToString().ToLower().Equals("i4"))
+                    {
+                        int num = Msi.RecordGetInteger(hRecord1, i + 1);
+                        if (num == Win32Error.MSI_NULL_INTEGER)
+                        {
+                            dataList.Add("");
+                            continue;
+                        }
+                        dataList.Add(num.ToString());
+                    }
+                    else if (buffer.ToString().ToLower().Equals("v0"))
+                    {
+                        dataList.Add("[Binary data]");
+                    }
+                    else
+                    {
+                        StringBuilder dataStr = new StringBuilder(255);
+                        int cap = dataStr.Capacity;
+                        Msi.RecordGetString(hRecord1, i + 1, dataStr, ref cap);
+                        dataList.Add(dataStr.ToString());
+                    }
+                }
+            }
+            return 0;
+        }
+
         public static List<SummaryInfoProps> GetSummaryInformation(String fileName)
         {
             try
