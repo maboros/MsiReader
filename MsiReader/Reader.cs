@@ -41,7 +41,7 @@ namespace MsiReader
                 if (Msi.DatabaseOpenView(hDatabase, "SELECT `Name` FROM _Tables", out IntPtr hView) != Win32Error.NO_ERROR)
                 {
                     Console.WriteLine("Failed to open view");
-                    return 1;
+                    return 2;
                 }
                 Msi.ViewExecute(hView, IntPtr.Zero);
                 while (Msi.ViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
@@ -51,7 +51,7 @@ namespace MsiReader
                     if (Msi.RecordGetString(hRecord, 1, buffer, ref capacity) != Win32Error.NO_ERROR)
                     {
                         Console.WriteLine("Failed to get record string");
-                        return 1;
+                        return 3;
                     }
                     returnNames.Add(buffer.ToString());
                 }
@@ -60,7 +60,7 @@ namespace MsiReader
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return 1;
+                return 4;
             }
         }
         public static int GetItemData(String fullPathName,String tableName,ref List<String> columnList,ref int columnCount,ref List<String> dataList)
@@ -94,7 +94,7 @@ namespace MsiReader
                             int capacity = buffer.Capacity;
                             if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
                             {
-                                return -1;
+                                return 3;
                             }
                             if (buffer.ToString()!= "")
                             {
@@ -105,7 +105,7 @@ namespace MsiReader
                 }
                 if (Msi.DatabaseOpenView(hDatabase, $"SELECT * FROM `{tableName}`", out IntPtr hView2) != Win32Error.NO_ERROR)
                 {
-                    return 2;
+                    return 4;
                 }
                 Msi.ViewExecute(hView2, IntPtr.Zero);
                 while (Msi.ViewFetch(hView2, out IntPtr hRecord1) != Win32Error.ERROR_NO_MORE_ITEMS)
@@ -119,7 +119,7 @@ namespace MsiReader
                         int capacity = buffer.Capacity;
                         if (Msi.RecordGetString(hColumnRecord, i + 1, buffer, ref capacity) != Win32Error.NO_ERROR)
                         {
-                            return 3;
+                            return 5;
                         }
                         if (buffer.ToString().ToLower().Equals("i2") || buffer.ToString().ToLower().Equals("i4"))
                         {
@@ -149,7 +149,7 @@ namespace MsiReader
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return 7;
+                return 6;
             }
         }
         public static List<SummaryInfoProps> GetSummaryInformation(String fileName)
