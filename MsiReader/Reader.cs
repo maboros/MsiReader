@@ -120,10 +120,9 @@ namespace MsiReader
         private static int GetTableData(IntPtr hView, ref int columnCount, ref List<String> dataList)
         {
             Msi.ViewExecute(hView, IntPtr.Zero);
-            while (Msi.ViewFetch(hView, out IntPtr hRecord1) != Win32Error.ERROR_NO_MORE_ITEMS)
+            while (Msi.ViewFetch(hView, out IntPtr hRecord) != Win32Error.ERROR_NO_MORE_ITEMS)
             {
                 Msi.ViewGetColumnInfo(hView, Msi.MSICOLINFO_TYPES, out IntPtr hColumnRecord);
-                columnCount = Msi.RecordGetFieldCount(hRecord1);
                 for (int i = 0; i < columnCount; ++i)
                 {
                     var dataSize = Msi.RecordDataSize(hColumnRecord, i + 1);
@@ -136,7 +135,7 @@ namespace MsiReader
                     }
                     if (buffer.ToString().ToLower().Equals("i2") || buffer.ToString().ToLower().Equals("i4"))
                     {
-                        int num = Msi.RecordGetInteger(hRecord1, i + 1);
+                        int num = Msi.RecordGetInteger(hRecord, i + 1);
                         if (num == Win32Error.MSI_NULL_INTEGER)
                         {
                             dataList.Add("");
@@ -152,7 +151,7 @@ namespace MsiReader
                     {
                         StringBuilder dataStr = new StringBuilder(255);
                         int cap = dataStr.Capacity;
-                        Msi.RecordGetString(hRecord1, i + 1, dataStr, ref cap);
+                        Msi.RecordGetString(hRecord, i + 1, dataStr, ref cap);
                         dataList.Add(dataStr.ToString());
                     }
                 }
