@@ -49,7 +49,7 @@ namespace MsiReader
         }
         public static int ViewExecute(IntPtr hView, IntPtr hRecord)
         {
-            return MsiViewExecute(hView, IntPtr.Zero);
+            return MsiViewExecute(hView, hRecord);
         }
         public static uint ViewFetch(IntPtr hView, out IntPtr hRecord)
         {
