@@ -45,9 +45,10 @@ namespace MsiReaderForm
             // treeView1
             // 
             this.treeView1.Enabled = false;
-            this.treeView1.Location = new System.Drawing.Point(13, 28);
+            this.treeView1.Location = new System.Drawing.Point(15, 37);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(248, 358);
+            this.treeView1.Size = new System.Drawing.Size(283, 476);
             this.treeView1.TabIndex = 0;
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
@@ -57,9 +58,10 @@ namespace MsiReaderForm
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(696, 389);
+            this.button1.Location = new System.Drawing.Point(795, 519);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(86, 31);
             this.button1.TabIndex = 1;
             this.button1.Text = "&Browse";
             this.button1.UseVisualStyleBackColor = true;
@@ -68,9 +70,9 @@ namespace MsiReaderForm
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(598, 393);
+            this.label1.Location = new System.Drawing.Point(672, 524);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 15);
+            this.label1.Size = new System.Drawing.Size(117, 20);
             this.label1.TabIndex = 2;
             this.label1.Text = "Browse MSI files";
             // 
@@ -82,9 +84,10 @@ namespace MsiReaderForm
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(267, 28);
+            this.listView1.Location = new System.Drawing.Point(305, 37);
+            this.listView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(504, 358);
+            this.listView1.Size = new System.Drawing.Size(575, 476);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -102,27 +105,27 @@ namespace MsiReaderForm
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 407);
+            this.label2.Location = new System.Drawing.Point(15, 543);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 15);
+            this.label2.Size = new System.Drawing.Size(76, 20);
             this.label2.TabIndex = 5;
             this.label2.Text = "Item data:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 9);
+            this.label3.Location = new System.Drawing.Point(15, 12);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 15);
+            this.label3.Size = new System.Drawing.Size(96, 20);
             this.label3.TabIndex = 6;
             this.label3.Text = "File structure:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(267, 10);
+            this.label4.Location = new System.Drawing.Point(305, 13);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(127, 15);
+            this.label4.Size = new System.Drawing.Size(156, 20);
             this.label4.TabIndex = 7;
             this.label4.Text = "Summary information:";
             // 
@@ -131,18 +134,19 @@ namespace MsiReaderForm
             this.listView2.FullRowSelect = true;
             this.listView2.GridLines = true;
             this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(13, 425);
+            this.listView2.Location = new System.Drawing.Point(15, 567);
+            this.listView2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(758, 202);
+            this.listView2.Size = new System.Drawing.Size(866, 268);
             this.listView2.TabIndex = 8;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(783, 639);
+            this.ClientSize = new System.Drawing.Size(893, 841);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -151,9 +155,10 @@ namespace MsiReaderForm
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.treeView1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(799, 678);
-            this.MinimumSize = new System.Drawing.Size(799, 678);
+            this.MaximumSize = new System.Drawing.Size(911, 888);
+            this.MinimumSize = new System.Drawing.Size(911, 888);
             this.Name = "Form1";
             this.Text = "MsiReader";
             this.ResumeLayout(false);
